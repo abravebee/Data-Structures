@@ -102,12 +102,18 @@ class DoublyLinkedList:
     # takes a reference to a node in the list and 
     # moves it to the front of the list, 
     # shifting all other list nodes down
+        # save node value
+        # delete current node (next/prev values will change)
+        # add_to_head(value)
         pass
 
     def move_to_end(self, node):
-        # takes a reference to a node in the list and 
-        # moves it to the end of the list, 
-        # shifting all other list nodes up
+    # takes a reference to a node in the list and 
+    # moves it to the end of the list, 
+    # shifting all other list nodes up
+        # save node value
+        # delete current node (next/prev vals will change)
+        # remove_from_head(value)
         pass
 
     def delete(self, node):
@@ -129,5 +135,14 @@ class DoublyLinkedList:
         
     def get_max(self):
         # returns the maximum value in the list
-        
+        if self.head == None:
+            return
+        else:
+            item = self.head
+            max = self.head
+            while item:
+                if item.value > max.value:
+                    max = item
+                item = item.next
+            return max.value
         pass
