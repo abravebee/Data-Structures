@@ -87,6 +87,18 @@ class BinarySearchTree:
         #     if self.right:
         #         self.right.for_each(cb)
         #     cb(self.value)
+        # Level Order
+        pass
+
+    def height(node):
+        if node is None:
+            return 0
+        leftheight = height(node.left)
+        rightheight = height(node.right)
+        if leftheight > rightheight:
+            return leftheight+1
+        else:
+            return rightheight+1
         pass
 
 '''
@@ -127,4 +139,13 @@ Tree Traversal
                 Return increment of larger height
                 Base: if node is None, return 0 (do not increment, do not recurse)
 
+            getLevelOrder(self)
+                Compute height(self)
+                For i in range 1 to height+1:
+                    cbOnGivenLevel(self, i)
+            
+            cbOnGivenLevel(self, level)
+                If level is 1, callback(self)
+                If level is > 1, recursively call on left and right, with level decremented by 1
+                Base: if self is None, return
 '''
