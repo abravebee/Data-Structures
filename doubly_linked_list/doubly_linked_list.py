@@ -47,7 +47,7 @@ class DoublyLinkedList:
     # replaces head of the list with a new value 
     # that is passed in
         current_head = self.head
-        new_head = ListNode(value, None, current_head)
+        new_head = ListNode(value)
         
         if not self.head and not self.tail:
             self.head = new_head
@@ -62,80 +62,70 @@ class DoublyLinkedList:
     def remove_from_head(self):
     # removes the head node and 
     # returns the value stored in it
-        value = self.head.value
         # if empty
         if not self.head and not self.tail:
             return None
         # elif single item
-        elif self.head == self.tail:
-            # set head and tail to None
+        prev_head = self.head
+        if self.head == self.tail or self.head.next == None:
+            # set head and tail to None    
             self.head == None
-            self.tail == None
-            # decrement length
-            self.length -= 1    
-            return value        
+            self.tail == None       
         else:
             # set next value to head
-            prev_head = self.head
+            self.head.delete()
             self.head = prev_head.next
-            prev_head.delete()
-            # decrement length
-            self.length -= 1
-            return prev_head.value
+        # decrement length
+        return prev_head.value
+        self.length -= 1    
         pass
 
     def add_to_tail(self, value):
     # replaces the tail of the list 
     # with a new value that is passed in
-        new_node = ListNode(value)
-        # if empty list
-        if self.tail:
+        new_tail = ListNode(value)
+        if not self.tail:
+            self.head = new_tail
+            self.tail = new_tail
+        else:
             # insert new node after tail
             self.tail.insert_after(value)
             # set tail to new node
             self.tail = self.tail.next
-        else:
-            # set head and tail to new node
-            self.head = new_node
-            self.tail = new_node
         self.length += 1
         pass
 
     def remove_from_tail(self):
     # removes the tail node and 
     # returns the value stored in it
-        current_tail = self.tail
         # if empty
         if not self.tail:
             return None
-        elif self.tail == self.head:
+        prev_tail = self.tail
+        if self.tail == self.head or self.tail.prev is None:
             self.head = None
             self.tail = None
-            return None
         else:
             self.tail.delete()
-            self.tail = current_tail.prev
-        return self.tail.value
+            self.tail = self.tail.prev
+        self.length -=1
+        return prev_tail.value
         pass
 
     def move_to_front(self, node):
     # takes a reference to a node in the list and 
     # moves it to the front of the list, 
     # shifting all other list nodes down
-        # save node value
-        value = node.value
         # delete current node (next/prev values will change)
         node.delete()
         # add_to_head(value)
-        self.add_to_head(value)
+        self.add_to_head(node.value)
         pass
 
     def move_to_end(self, node):
     # takes a reference to a node in the list and 
     # moves it to the end of the list, 
     # shifting all other list nodes up
-        # save node value
-        value = node.value
         # delete current node (next/prev vals will change)
         node.delete()
         self.length -= 1
