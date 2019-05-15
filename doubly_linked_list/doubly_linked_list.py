@@ -56,7 +56,6 @@ class DoublyLinkedList:
         else:
             self.head.insert_before(value)
             self.head = self.head.prev
-
         self.length += 1
         pass
 
@@ -77,29 +76,28 @@ class DoublyLinkedList:
             return value        
         else:
             # set next value to head
-            self.head = self.head.next
+            prev_head = self.head
+            self.head = prev_head.next
+            prev_head.delete()
             # decrement length
             self.length -= 1
-            return value
+            return prev_head.value
         pass
 
     def add_to_tail(self, value):
     # replaces the tail of the list 
     # with a new value that is passed in
         new_node = ListNode(value)
-        current_tail = self.tail
         # if empty list
-        if not self.head and not self.tail:
-            # set head and tail to new node
-            self.head = new_node
-            self.tail = new_node
-        else:
+        if self.tail:
             # insert new node after tail
             self.tail.insert_after(value)
             # set tail to new node
-            # self.tail = new_node
-            # self.tail.prev = current_tail
             self.tail = self.tail.next
+        else:
+            # set head and tail to new node
+            self.head = new_node
+            self.tail = new_node
         self.length += 1
         pass
 
@@ -140,24 +138,31 @@ class DoublyLinkedList:
         value = node.value
         # delete current node (next/prev vals will change)
         node.delete()
+        self.length -= 1
         # add_to_tail(value)
-        self.add_to_tail(value)
+        self.add_to_tail(node.value)
         pass
 
+    # takes a reference to a node in the list and 
+    # removes it from the list. 
+    # The deleted node's `previous` and `next` pointers 
+    # should point to each afterwards
     def delete(self, node):
-        # takes a reference to a node in the list and 
-        # removes it from the list. 
-        # The deleted node's `previous` and `next` pointers 
-        # should point to each afterwards
-        if self.head == None:
-            return
+        # if empty list...
+        if not self.head and not self.tail: 
+            return None
+        # if list of one...
+        if self.head == self.tail:
+            self.head == None
+            self.tail == None
+        if self.head == node:
+            self.head = node.next
+            node.delete()
+        if self.tail == node:
+            self.tail = node.prev
+            node.delete()
         else:
-            item = self.head
-            while item:
-                if node == item.value:
-                    self.delete(node)
-                else:
-                    item = item.next
+            node.delete()
         self.length -= 1
         pass
         
