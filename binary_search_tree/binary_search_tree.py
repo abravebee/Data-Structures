@@ -66,4 +66,65 @@ class BinarySearchTree:
 # performs a traversal of _every_ node in the tree, executing the passed-in callback function on each tree node value. 
 # There is a myriad of ways to perform tree traversal; in this case any of them should work. 
     def for_each(self, cb):
+        # Inorder
+        # if self:
+        #     if self.left:
+        #         self.left.for_each(cb)
+        #     cb(self.value)
+        #     if self.right:
+        #         self.right.for_each(cb)
+        # Preorder
+        # if self:
+        #     cb(self.value)
+        #     if self.left:
+        #         self.left.for_each(cb)
+        #     if self.right:
+        #         self.right.for_each(cb)
+        # Postorder
+        # if self:
+        #     if self.left:
+        #         self.left.for_each(cb)
+        #     if self.right:
+        #         self.right.for_each(cb)
+        #     cb(self.value)
         pass
+
+'''
+Tree Traversal
+
+    Inorder: Left, Root, Right
+        Non decreasing/increasing order
+            
+            inorder(tree)
+                Traverse the left subtree: inorder(left-subtree)
+                Visit the root
+                Traverse the right subtree: inorder(right-subtree)
+                Base: if tree is None
+
+    Preorder: Root, Left, Right
+        Create a copy of the tree. Get prefix expression of an expression tree.
+
+            preorder(tree)
+                Visit the root
+                Traverse the left subtree: preorder(left-subtree)
+                Traverse the right subtree: preorder(right-subtree)
+                Base: if tree is None
+
+    Postorder: Left, Right, Root
+        Delete the tree. Get the postfix expression of an expression tree.
+
+            postorder(tree)
+                Traverse the left subtree: postorder(left-subtree)
+                Traverse the right subtree: postorder(right-subtree)
+                Visit the root
+                Base: if tree is None
+
+    Level Order (Breadth First):
+
+            height(node)
+                Compute height of left subtree: height(left-subtree)
+                Compute height of right subtree: height(right-subtree)
+                Return increment of larger height
+                Base: if node is None, return 0 (do not increment, do not recurse)
+
+'''
