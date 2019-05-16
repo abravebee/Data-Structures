@@ -27,7 +27,7 @@ class Heap:
     #returns the maximum value in the heap 
     # IN CONSTANT TIME
     def get_max(self):
-        return self.storage.pop()
+        return self.storage[0]
         pass
 
     #  returns the number of elements stored in the heap.
@@ -39,12 +39,12 @@ class Heap:
     # by swapping it with its parent 
     # if the parent's value is less than the value at the specified index.
     def _bubble_up(self, index):
-        print(f"index: {index}, self.storage: {len(self.storage) - 1}")
-        if index <= 0 or index > len(self.storage)-1:
-            print(f"{index} < 1 or {index} > {len(self.storage) - 1}")
+        length = self.get_size()
+        if index <= 0 or index > length-1:
             return
-        parentIndex = (index-1) // 2
-        if parentIndex > len(self.storage) or parentIndex < 0:
+        parentIndex = (index-1) / 2
+        # parentIndex = math.ceil((index-1)/2)
+        if parentIndex > length-1 or parentIndex < 0:
             return
         if self.storage[index] > self.storage[parentIndex]:
             hold = self.storage[index]
@@ -58,4 +58,18 @@ class Heap:
     # If the larger child's value is larger than the parent's value, 
     # the child element is swapped with the parent
     def _sift_down(self, index):
+        length = self.get_size()
+        leftChild = index * 2 + 1
+        rightChild = index * 2 + 2
+        if leftChild > length-1 or rightChild > length-1:
+            return
+        if self.storage[leftChild] > self.storage[rightChild]:
+            largestChild = leftChild
+        else:
+            largestChild = rightChild
+        if self.storage[largestChild] > self.storage[index]:
+            hold = self.storage[index]
+            self.storage[index] = self.storage[largestChild]
+            self.storage[largestChild] = hold
+            self._sift_down(largestChild)
         pass
