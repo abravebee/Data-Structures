@@ -1,17 +1,164 @@
 class BinarySearchTree:
-  def __init__(self, value):
-    self.value = value
-    self.left = None
-    self.right = None
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
 
-  def insert(self, value):
-    pass
+    def insert(self, value):
+        if value < self.value:
+            if not self.left:
+                self.left = BinarySearchTree(value)
+            else:
+                self.left.insert(value)
 
-  def contains(self, target):
-    pass
+        elif value >= self.value:
+            if not self.right:
+                self.right = BinarySearchTree(value)
+            else:
+                self.right.insert(value)
+        pass
 
-  def get_max(self):
-    pass
+# searches the binary search tree for the input value, returning a boolean indicating whether the value exists in the tree or not.
+    def contains(self, target):
+        # compare target to root
+        if target == self.value:
+            print(f"target {target} == self.value {self.value}")
+            return True
+        # if it's smaller, check left side
+        elif target < self.value:
+            print(f"target {target} < self.value {self.value}")
+            # first check that there is a left side; if not, return False
+            if not self.left:
+                print("no self.left")
+                return False
+            # else, if it doesn't match the left side, call contains on left side with same target
+            elif target != self.left:
+                print(f"target {target} != self.left {self.left}")
+                return self.left.contains(target)
+            else:
+                print(f"target {target} == self.left {self.left}")
+                return True
+        # else, check right side
+        elif target > self.value:
+            print(f"target {target} > self.value {self.value}")
+            # first check that there is a right side; if not, return False
+            if not self.right:
+                print("no self.right")
+                return False
+            # else, if it doesn't match the right side, call contains on right side with same target
+            elif target != self.right:
+                print(f"target {target} != self.right {self.right}")
+                return self.right.contains(target)
+            else:
+                print(f"target {target} == self.right {self.right}")
+                return True            
+        pass
 
-  def for_each(self, cb):
-    pass
+# returns the maximum value in the binary search tree.
+    def get_max(self):
+        # find rightmost node
+        max = self
+        while max.right:
+            max = max.right
+        return max.value
+        pass
+
+# performs a traversal of _every_ node in the tree, executing the passed-in callback function on each tree node value. 
+# There is a myriad of ways to perform tree traversal; in this case any of them should work. 
+    def for_each(self, cb):
+        # Inorder
+        # if self:
+        #     if self.left:
+        #         self.left.for_each(cb)
+        #     cb(self.value)
+        #     if self.right:
+        #         self.right.for_each(cb)
+        # Preorder
+        # if self:
+        #     cb(self.value)
+        #     if self.left:
+        #         self.left.for_each(cb)
+        #     if self.right:
+        #         self.right.for_each(cb)
+        # Postorder
+        # if self:
+        #     if self.left:
+        #         self.left.for_each(cb)
+        #     if self.right:
+        #         self.right.for_each(cb)
+        #     cb(self.value)
+        # Level Order
+        height = self.height(self)
+        for i in range (1, height+1):
+            self.cbOnGivenLevel(self, i, cb)            
+        pass
+
+    def height(self, node): #for Level Order
+        if node is None:
+            return 0
+        leftheight = self.height(node.left)
+        rightheight = self.height(node.right)
+        if leftheight > rightheight:
+            return leftheight+1
+        else:
+            return rightheight+1
+        pass
+    
+    def cbOnGivenLevel(self, node, level, cb): #for Level Order
+        if node is None:
+            return
+        if level == 1:
+            print(f"\nnode.value {node.value}, cb {cb}")
+            cb(node.value)
+        elif level > 1:
+            self.cbOnGivenLevel(node.left, level-1, cb)
+            self.cbOnGivenLevel(node.right, level-1, cb)
+
+'''
+Tree Traversal
+
+    Inorder: Left, Root, Right
+        Non decreasing/increasing order
+            
+            inorder(tree)
+                Traverse the left subtree: inorder(left-subtree)
+                Visit the root
+                Traverse the right subtree: inorder(right-subtree)
+                Base: if tree is None
+
+    Preorder: Root, Left, Right
+        Create a copy of the tree. Get prefix expression of an expression tree.
+
+            preorder(tree)
+                Visit the root
+                Traverse the left subtree: preorder(left-subtree)
+                Traverse the right subtree: preorder(right-subtree)
+                Base: if tree is None
+
+    Postorder: Left, Right, Root
+        Delete the tree. Get the postfix expression of an expression tree.
+
+            postorder(tree)
+                Traverse the left subtree: postorder(left-subtree)
+                Traverse the right subtree: postorder(right-subtree)
+                Visit the root
+                Base: if tree is None
+
+    Level Order (Breadth First):
+
+            height(node)
+                Compute height of left subtree: height(left-subtree)
+                Compute height of right subtree: height(right-subtree)
+                Return increment of larger height
+                Base: if node is None, return 0 (do not increment, do not recurse)
+
+            getLevelOrder(self)
+                Compute height(self)
+                For i in range 1 to height+1:
+                    cbOnGivenLevel(self, i)
+            
+            cbOnGivenLevel(self, level)
+                If level is 1, callback(self)
+                If level is > 1, recursively call on left and right, with level decremented by 1
+                Base: if self is None, return
+'''
